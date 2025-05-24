@@ -2,19 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import { getPosts } from "../APIS/api";
 
 export const FetchRQ = () => {
-  const getApiData = async () => {
-    try {
-      const res = await getPosts();
-      return res.status === 200 && res.data;
-    } catch (error) {
-      console.log(error);
-        return [];
-    }
-  };
-  const { data } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["posts"],
-    queryFn: getApiData,
+    queryFn: getPosts,
   });
+  if (isLoading) return <div className="text-center mt-10">Loading...</div>;
+  if (isError)
+    return (
+      <div className="text-center mt-10 text-red-500">
+        Error: {error.message}
+      </div>
+    );
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-[90%] mx-auto mt-10 max-w-[1920px] mb-10">
