@@ -14,7 +14,7 @@ export const FetchOld = () => {
     useEffect(() => {
         getApiData();
     }, []);
-    return(<>
+    return (<>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-[90%] mx-auto mt-10 max-w-[1920px] mb-10" >
             {post?.map((item) => (
                 <div
