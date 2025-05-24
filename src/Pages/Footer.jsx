@@ -1,7 +1,9 @@
 export const Footer = () => {
     return(
         <>
-            <h1>This is Footer component</h1>
+            <footer className="bg-gray-800 text-white py-4 text-center">
+                <p className="text-sm">&copy; {new Date().getFullYear()} My Website. All rights reserved.</p>
+            </footer>
         </>
     )
 }
