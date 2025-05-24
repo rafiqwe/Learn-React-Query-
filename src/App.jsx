@@ -4,6 +4,7 @@ import { ErrorPage } from "./Pages/ErrorPage";
 import { Home } from "./Pages/Home";
 import { FetchOld } from "./Pages/FetchOld";
 import { FetchRQ } from "./Pages/FetchRQ";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const App = () => {
   const route = createBrowserRouter([
@@ -22,14 +23,17 @@ const App = () => {
         },
         {
           path: "/rq",
-          element: <FetchRQ/>,
+          element: <FetchRQ />,
         },
       ],
     },
   ]);
+  const queryClient = new QueryClient();
   return (
     <>
-      <RouterProvider router={route} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={route} />
+      </QueryClientProvider>
     </>
   );
 };
