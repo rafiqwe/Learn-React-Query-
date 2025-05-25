@@ -10,6 +10,7 @@ export const Header = () => {
                         <Link to="/"  className="text-white hover:text-blue-200">Home</Link>
                         <Link to="/trad" className="text-white hover:text-blue-200">Fetch Old</Link>
                         <Link to="/rq" className="text-white hover:text-blue-200">Fetch RQ</Link>
+                         <Link to="/infinite" className="text-white hover:text-blue-200">Infinite</Link>
                     </div>
                 </div>
             </nav>

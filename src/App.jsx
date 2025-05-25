@@ -6,6 +6,7 @@ import { FetchOld } from "./Pages/FetchOld";
 import { FetchRQ } from "./Pages/FetchRQ";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { InfiniteScroll } from "./Pages/InfiniteScroll";
 
 const App = () => {
   const route = createBrowserRouter([
