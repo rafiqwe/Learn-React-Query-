@@ -27,10 +27,8 @@ export const FetchRQ = () => {
   });
 
   const deleteUseMutation = useMutation({
-    mutationFn: (id) => {
-      deletePost(id); // Assuming deletePost is defined to handle the deletion
-    },
-    onSuccess: (data,id) => {
+    mutationFn: (id) => deletePost(id), // Assuming deletePost is defined to handle the deletion
+    onSuccess: (data, id) => {
       // Optionally, you can refetch the posts after deletion
       // queryClient.invalidateQueries(["posts", pageNumber]);
 
@@ -39,9 +37,21 @@ export const FetchRQ = () => {
       });
       console.log(`Post with ID ${id} deleted successfully `);
     },
-
   });
 
+  // updated function usign useMutation hook
+  const updateUseMutation = useMutation({
+    mutationFn: (id) => updatePost(id),
+    onSuccess: (data, id) => {
+      queryClient.setQueryData(["posts", pageNumber], (oldData) => {
+        return oldData?.map((curElem) =>
+          curElem.id === id ? { ...curElem, title: data.data.title } : curElem
+        );
+      });
+      console.log(data);
+      console.log(`Update with ID ${id} updated successfully `);
+    },
+  });
   // if (isLoading) return <div className="text-center mt-10">Loading...</div>;
   // if (isError)
   //   return (
@@ -65,10 +75,16 @@ export const FetchRQ = () => {
             </span>{" "}
             <br />
             <button
-              className=" bg-blue-500 text-white px-4 py-2 rounded-md absolute bottom-4 right-6"
+              className=" bg-blue-500 text-white px-4 py-2 rounded-md "
               onClick={() => deleteUseMutation.mutate(item.id)}
             >
               Delete
+            </button>
+            <button
+              className=" bg-blue-500 text-white px-4 py-2 rounded-md "
+              onClick={() => updateUseMutation.mutate(item.id)}
+            >
+              Update
             </button>
           </div>
         ))}

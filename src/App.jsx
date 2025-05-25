@@ -26,6 +26,10 @@ const App = () => {
           path: "/rq",
           element: <FetchRQ />,
         },
+                {
+          path: "/infinite",
+          element: <InfiniteScroll />,
+        },
       ],
     },
   ]);

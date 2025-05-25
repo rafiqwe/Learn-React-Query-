@@ -10,3 +10,11 @@ export const getPosts = (pageNumber) => {
 export const deletePost = (postId) => {
     return api.delete(`/posts/${postId}`);
 }
+
+// to update post 
+export const updatePost = (postId) => {
+    return api.patch(`/posts/${postId}`, {title: " I have updated"})
+}
+
+
+
