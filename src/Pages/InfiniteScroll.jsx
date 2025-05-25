@@ -3,7 +3,7 @@ import { fecthUsers } from "../APIS/api";
 import { useEffect } from "react";
 
 export const InfiniteScroll = () => {
-  const { data, hasNextPage, fetchNextPage,status, isFetchingNextPage } = useInfiniteQuery({
+  const { data, hasNextPage, fetchNextPage, status , isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["users"],
     queryFn: fecthUsers,
     getNextPageParam: (lastPage, allPage) => {
@@ -11,7 +11,7 @@ export const InfiniteScroll = () => {
       return lastPage.length === 10 ? allPage.length + 1 : undefined;
     },
   });
-  const handleSrcoll = () => {
+  const handleScroll = () => {
     const bottom =
       window.innerHeight + window.scrollY >=
       document.documentElement.scrollHeight - 1;
@@ -21,9 +21,9 @@ export const InfiniteScroll = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleSrcoll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleSrcoll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, [hasNextPage]);
 
@@ -31,7 +31,7 @@ export const InfiniteScroll = () => {
     <>
       <div className="mx-5 my-7">
         <h1 className="w-full text-center text-2xl font-bold ">
-          The Infinite Srcoll Page
+          The Infinite Scroll Page
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
           {data?.pages?.map((page, i) =>

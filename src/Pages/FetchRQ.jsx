@@ -52,13 +52,6 @@ export const FetchRQ = () => {
       console.log(`Update with ID ${id} updated successfully `);
     },
   });
-  // if (isLoading) return <div className="text-center mt-10">Loading...</div>;
-  // if (isError)
-  //   return (
-  //     <div className="text-center mt-10 text-red-500">
-  //       Error: {error.message}
-  //     </div>
-  //   );
 
   return (
     <>

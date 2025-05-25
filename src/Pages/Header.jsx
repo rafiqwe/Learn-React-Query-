@@ -1,19 +1,48 @@
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom";
 
 export const Header = () => {
-    return(
-        <>
-            <nav className="bg-blue-600 p-4">
-                <div className="container mx-auto flex justify-between items-center">
-                    <span className="text-white text-xl font-bold">Learn React Query</span>
-                    <div className="space-x-4">
-                        <Link to="/"  className="text-white hover:text-blue-200">Home</Link>
-                        <Link to="/trad" className="text-white hover:text-blue-200">Fetch Old</Link>
-                        <Link to="/rq" className="text-white hover:text-blue-200">Fetch RQ</Link>
-                         <Link to="/infinite" className="text-white hover:text-blue-200">Infinite</Link>
-                    </div>
-                </div>
-            </nav>
-        </>
-    )
-}
+  return (
+    <>
+      <nav className="bg-blue-600 p-4">
+        <div className="container mx-auto flex justify-between items-center">
+          <span className="text-white text-xl font-bold">
+            Learn React Query
+          </span>
+          <ul className="space-x-4 flex gap-7">
+            <li>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive ? "active " : "text-[#90e0ef] hover:text-[#fffcf9]"
+                }
+              >
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/trad"
+                className="text-[#90e0ef] hover:text-[#fffcf9]"
+              >
+                Fetch Old
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/rq" className="text-[#90e0ef] hover:text-[#fffcf9]">
+                Fetch RQ
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/infinite"
+                className="text-[#90e0ef] hover:text-[#fffcf9]"
+              >
+                Infinite
+              </NavLink>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </>
+  );
+};
