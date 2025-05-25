@@ -1,9 +1,15 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getPosts } from "../APIS/api";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { deletePost, getPosts } from "../APIS/api";
 import { useState } from "react";
 
 export const FetchRQ = () => {
   const [pageNumber, setPageNumber] = useState(0);
+
   const getApiData = async (pageNumber) => {
     try {
       const res = await getPosts(pageNumber);
@@ -13,31 +19,57 @@ export const FetchRQ = () => {
     }
   };
 
+  const queryClient = useQueryClient();
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["posts", pageNumber],
     queryFn: () => getApiData(pageNumber),
     placeholderData: keepPreviousData,
   });
 
-  if (isLoading) return <div className="text-center mt-10">Loading...</div>;
-  if (isError)
-    return (
-      <div className="text-center mt-10 text-red-500">
-        Error: {error.message}
-      </div>
-    );
-    
+  const deleteUseMutation = useMutation({
+    mutationFn: (id) => {
+      deletePost(id); // Assuming deletePost is defined to handle the deletion
+    },
+    onSuccess: (data,id) => {
+      // Optionally, you can refetch the posts after deletion
+      // queryClient.invalidateQueries(["posts", pageNumber]);
+
+      queryClient.setQueryData(["posts", pageNumber], (curElem) => {
+        return curElem?.filter((item) => item.id !== id);
+      });
+      console.log(`Post with ID ${id} deleted successfully `);
+    },
+
+  });
+
+  // if (isLoading) return <div className="text-center mt-10">Loading...</div>;
+  // if (isError)
+  //   return (
+  //     <div className="text-center mt-10 text-red-500">
+  //       Error: {error.message}
+  //     </div>
+  //   );
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-[90%] mx-auto mt-10 max-w-[1920px] mb-10">
         {data?.map((item) => (
           <div
             key={item.id}
-            className="bg-white shadow-md rounded-lg p-6 border border-gray-200"
+            className="bg-white shadow-md rounded-lg p-6 border border-gray-200 relative"
           >
             <h2 className="text-xl font-semibold mb-2">{item.title}</h2>
             <p className="text-gray-700 mb-4">{item.body}</p>
-            <span className="text-sm text-gray-500">Post ID: {item.id}</span>
+            <span className="text-sm text-gray-500">
+              Post ID: {item.id}
+            </span>{" "}
+            <br />
+            <button
+              className=" bg-blue-500 text-white px-4 py-2 rounded-md absolute bottom-4 right-6"
+              onClick={() => deleteUseMutation.mutate(item.id)}
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
