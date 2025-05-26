@@ -1,31 +1,35 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fecthUsers } from "../APIS/api";
 import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 
 export const InfiniteScroll = () => {
-  const { data, hasNextPage, fetchNextPage, status , isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["users"],
-    queryFn: fecthUsers,
-    getNextPageParam: (lastPage, allPage) => {
-      // console.log(lastPage, allPage);
-      return lastPage.length === 10 ? allPage.length + 1 : undefined;
-    },
+  const { data, hasNextPage, fetchNextPage, status, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["users"],
+      queryFn: fecthUsers,
+      getNextPageParam: (lastPage, allPage) => {
+        // console.log(lastPage, allPage);
+        return lastPage.length === 10 ? allPage.length + 1 : undefined;
+      },
+    });
+  // const handleScroll = () => {
+  //   const bottom =
+  //     window.innerHeight + window.scrollY >=
+  //     document.documentElement.scrollHeight - 1;
+  //   if (bottom && hasNextPage) {
+  //     fetchNextPage();
+  //   }
+  // };
+
+  const { ref, inView } = useInView({
+    threshold: 1,
   });
-  const handleScroll = () => {
-    const bottom =
-      window.innerHeight + window.scrollY >=
-      document.documentElement.scrollHeight - 1;
-    if (bottom && hasNextPage) {
+  useEffect(() => {
+    if (inView && hasNextPage) {
       fetchNextPage();
     }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [hasNextPage]);
+  }, [inView, hasNextPage, fetchNextPage]);
 
   return (
     <>
@@ -52,7 +56,11 @@ export const InfiniteScroll = () => {
             ))
           )}
         </div>
-        {isFetchingNextPage && <div className="text-center text-red-500">Loading more....</div>}
+        <div ref={ref}>
+          {isFetchingNextPage && (
+            <div className="text-center text-red-500">Loading more....</div>
+          )}
+        </div>
       </div>
     </>
   );
