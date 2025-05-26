@@ -68,7 +68,7 @@ export const FetchRQ = () => {
             </span>{" "}
             <br />
             <button
-              className=" bg-blue-500 text-white px-4 py-2 rounded-md "
+              className=" bg-blue-500 text-white px-4 py-2 rounded-md mr-5 "
               onClick={() => deleteUseMutation.mutate(item.id)}
             >
               Delete
